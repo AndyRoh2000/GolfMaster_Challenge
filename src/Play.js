@@ -9,8 +9,8 @@ class Play extends Phaser.Scene {
         this.SHOT_VELOCITY_Y_MIN = 700
         this.SHOT_VELOCITY_Y_MAX = 1100
 
-        this.shotsTaken = 0;
-        this.successfulShots = 0;
+        this.shotsTaken = 0
+        this.successfulShots = 0
 
     }
 
@@ -45,14 +45,11 @@ class Play extends Phaser.Scene {
             // makes it more accurate, and drag it a bit
         this.ball.body.setDamping(true).setDrag(0.5)
 
-        // add walls
-        // let wallA = this.physics.add.sprite(0, height/4, "wall")
-        // wallA.setX(Phaser.Math.Between(0 + wallA.width/2, width - wallA.width/2))
-        // wallA.body.setImmovable(true)
-        let wallA = this.physics.add.sprite(0, height/4, "wall").setCollideWorldBounds(true).setBounce(1, 0);
-        wallA.setX(Phaser.Math.Between(0 + wallA.width/2, width - wallA.width/2));
-        wallA.body.setImmovable(true);
-        wallA.body.setVelocityX(100);
+        
+        let wallA = this.physics.add.sprite(0, height/4, "wall").setCollideWorldBounds(true).setBounce(1, 0)
+        wallA.setX(Phaser.Math.Between(0 + wallA.width/2, width - wallA.width/2))
+        wallA.body.setImmovable(true)
+        wallA.body.setVelocityX(100)
 
         let wallB = this.physics.add.sprite(0, height/2, "wall")
         wallB.setX(Phaser.Math.Between(0 + wallB.width/2, width - wallB.width/2))
@@ -69,15 +66,12 @@ class Play extends Phaser.Scene {
 
         // add pointer input
         this.input.on("pointerdown", (pointer) => {
-            // let shotDirection = pointer.y <= this.ball.y ? 1 : -1
-            // this.ball.body.setVelocityX(Phaser.Math.Between(-this.SHOT_VELOCITY_X, this.SHOT_VELOCITY_X))
-            // this.ball.body.setVelocityY(Phaser.Math.Between(this.SHOT_VELOCITY_Y_MIN, this.SHOT_VELOCITY_Y_MAX) * shotDirection)    
-            let shotDirectionY = pointer.y <= this.ball.y ? 1 : -1;
-            let shotDirectionX = pointer.x >= this.ball.x ? 1 : -1;
-            this.ball.body.setVelocityX(this.SHOT_VELOCITY_X * -shotDirectionX); // Changed line
-            this.ball.body.setVelocityY(Phaser.Math.Between(this.SHOT_VELOCITY_Y_MIN, this.SHOT_VELOCITY_Y_MAX) * shotDirectionY);    
+            let shotDirectionY = pointer.y <= this.ball.y ? 1 : -1
+            let shotDirectionX = pointer.x >= this.ball.x ? 1 : -1
+            this.ball.body.setVelocityX(this.SHOT_VELOCITY_X * -shotDirectionX)
+            this.ball.body.setVelocityY(Phaser.Math.Between(this.SHOT_VELOCITY_Y_MIN, this.SHOT_VELOCITY_Y_MAX) * shotDirectionY)   
         
-            this.shotsTaken++;
+            this.shotsTaken++
         
         })
 
@@ -85,7 +79,7 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.ball, this.cup, (ball, cup) => {
             // ball.destroy()
             this.ballReset()
-            this.successfulShots++;
+            this.successfulShots++
         })
 
         // ball/wall collision
@@ -94,24 +88,23 @@ class Play extends Phaser.Scene {
         // ball/one-way collision
         this.physics.add.collider(this.ball, this.oneWay)
 
-        this.shotText = this.add.text(16, 16, '', { fontSize: '20px', fill: '#FFF' });
-        this.updateStats();
+        this.shotText = this.add.text(16, 16, '', { fontSize: '20px', fill: '#FFF' })
+        this.updateStats()
     }
 
     update() {
-        this.updateStats();
+        this.updateStats()
     }
 
     ballReset() {
-        this.ball.setPosition(width / 2, height - height / 10);
-        // this.ball.body.setVelocity(0, 0);
+        this.ball.setPosition(width / 2, height - height / 10)
         this.ball.body.setVelocityX(0)
         this.ball.body.setVelocityY(0)
     }
 
     updateStats() {
-        let successPercentage = (this.successfulShots / this.shotsTaken * 100) || 0;
-        this.shotText.setText(`Shots: ${this.shotsTaken} - Successful: ${this.successfulShots} - Success Rate: ${successPercentage.toFixed(1)}%`);
+        let successPercentage = (this.successfulShots / this.shotsTaken * 100) || 0
+        this.shotText.setText(`Shots: ${this.shotsTaken} - Successful: ${this.successfulShots} - Success Rate: ${successPercentage.toFixed(1)}%`)
     }
 }
 /*
